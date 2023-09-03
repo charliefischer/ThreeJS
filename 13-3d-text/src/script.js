@@ -38,7 +38,7 @@ fontLoader.load(
     '/fonts/helvetiker_regular.typeface.json',
     font => {
         const textGeometry = new TextGeometry(
-            'Charlie Fischer', {
+            'Welcome', {
                 font,
                 size: 0.5,
                 height: 0.2,
