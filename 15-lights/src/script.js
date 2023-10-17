@@ -248,11 +248,40 @@ const jump = async () => {
   }, 1000);
 };
 
+const spin = () => {
+  spaceship.forEach((n) => {
+    updateRotationTween({ y: n.rotation.y }, { y: n.rotation.y + Math.PI }, 400, n);
+  });
+  alien.forEach((n) => {
+    if(n.name === "Cone") {
+      const JUMP_HEIGHT = 1
+      const from = { y: n.position.y };
+      const to = { y: n.position.y + JUMP_HEIGHT };
+      updateTween(from, to, 500, n);
+
+      setTimeout(() => {
+        const from = { y: n.position.y };
+        const to = { y: n.position.y - JUMP_HEIGHT };
+        updateTween(from, to, 500, n);
+      }, 500)
+    }
+  });
+}
+
 const onKeyDown = (e) => {
   let time = 600;
+  const keyCode = e.which;
+  console.log(keyCode)
+  if (keyCode === 38) {
+    jump();
+    return;
+  }
+  if (keyCode === 32) {
+    spin();
+    return;
+  }
   spaceship.forEach((n) => {
     const targetPosition = { x: n.position.x };
-    const keyCode = e.which;
     if (keyCode === 37) {
       targetPosition.x = n.position.x - 1;
       spaceship.forEach((n, i) => {
@@ -279,15 +308,10 @@ const onKeyDown = (e) => {
       targetPosition.x = 0;
       time = 1500;
     }
-    if (keyCode === 38) {
-      jump();
-    }
-
     updateTween(n.position, targetPosition, time, n);
   });
   alien.forEach((n) => {
     const targetPosition = { x: n.position.x };
-    const keyCode = e.which;
     if (keyCode === 37) {
       targetPosition.x = n.position.x - 1;
     }
@@ -298,10 +322,6 @@ const onKeyDown = (e) => {
       targetPosition.x = 0;
       time = 1500;
     }
-    if (keyCode === 38) {
-      jump();
-    }
-
     updateTween(n.position, targetPosition, time, n);
   });
 };
